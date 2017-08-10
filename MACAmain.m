@@ -44,7 +44,7 @@ for i = 1 : numOne
     end
 end
 
-%%
+%%`
 %step 2: binarize X, delete the same vector
 xorBin = unique(xorSet,'rows');
 
@@ -76,17 +76,47 @@ end
 tmp = length(find(move(1, :) ~= 0));
 L = fliplr(move(1, 1:tmp));
 
+%get p
+P = size(L, 2);
+%%
+%step 4
+%reorganize the input patterns
+%generate the reorganize rules
+tempL = zeros(1, bitSize-P);
+j = 0;
 for i = 1 : bitSize
-    
-    
+        if(~ismember(i, L))
+            j = j + 1;
+            tempL(1, j) = i;
+        end   
 end
-
-
-
+reOrganRule = [L, tempL];
+    
+rePatternOne = patternOne(:, reOrganRule);
+rePatternTwo= patternTwo(:, reOrganRule);
+% compute the XOR of the re-organized patterns
+rexorSet = true(numOne*numTwo, bitSize);
+for i = 1 : numOne
+    for j = 1 : numTwo
+        rexorSet(i*j,:) = xor(rePatternOne(i,:), rePatternTwo(j,:));
+    end
+end
  
+%%
+%step 5
+T_p = eye(P);
+
+%%
+%step 6 - Binary Decision Diagram BDD optimisation technique
+%to make sure that the modified T_p . X' ~=0
+
+
+%BDD optimisation algorithm????
 
 
 
+%%
+%step 7 - Construction of the T
 
 
 
